@@ -10,7 +10,10 @@
 const char* talk_id;
 const char* talk_key;
 const char* thing_key;
-
+UNOWiFi_Thingspeak::UNOWiFi_Thingspeak(const char* Thing_key)
+{
+	thing_key=Thing_key;
+}
 UNOWiFi_Thingspeak::UNOWiFi_Thingspeak(const char* Talk_id,
 const char* Talk_key){
 	talk_id=Talk_id;
@@ -145,36 +148,30 @@ void UNOWiFi_Thingspeak::MutiplegetCommands()
 	   Ciao.println(req);
      }
 }
-/*void UNOWiFi_Thingspeak::Cutcommand(char cdms[50],int stop)
+void UNOWiFi_Thingspeak::MutiplePublish(float data[8],int count)
 {
-	int i,y;
-	int Stop=0;
-	char z=cdms[0];
-	for(i=0;i<2;i++)
+	int i;
+	String url="/update?api_key=";
+	url+=thing_key;
+	for(i=0;i<count;i++)
 	{
-		for(y=0;y<stop;y++)
-		{
-			if(cdms[y]==z)
-			{
-				if(cdms[y+1]==',')
-				{
-					y+=2;
-					i++;
-				}
-				else if(cdms[y+1]==' ')
-				{
-					y=51;
-					i=2;	
-				}
-				else
-				{
-					continue;
-				}
-			}
-			else
-			{
-				cdm[i]+=cdms[y];
-			}
-		}
+		url+="&field";
+		url+=(i+1);
+		url+="=";
+		url+=data[i];
 	}
-}*/
+	Ciao.println("Send data to thingspeak");
+	
+	CiaoData send=Ciao.write(driver,host,url);
+	if(!send.isEmpty())
+	{
+		Ciao.println("State"+String(send.get(1)));
+		Ciao.println("Count of data: "+String(send.get(2)));
+		Ciao.println(url);
+	}
+	else
+	{
+		Ciao.println("Error");
+		Ciao.println(url);
+	}
+}

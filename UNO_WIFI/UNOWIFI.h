@@ -4,6 +4,7 @@
 
 class UNOWiFi_Thingspeak{
 	public:
+       UNOWiFi_Thingspeak(const char* Thing_key);
 	   UNOWiFi_Thingspeak(const char* Talk_id,const char* Talk_key);
 	   UNOWiFi_Thingspeak(const char* Talk_id,const char* Talk_key,
 	   const char* Thing_key);	  
@@ -17,6 +18,7 @@ class UNOWiFi_Thingspeak{
     	void CUTString();
 		float Convert_toFloat(String data);
     	int Convert_toInt(String data);
+    	void MutiplePublish(float data[8],int count);
    public: String Command;
    public: String Data;	
    public: String Mutiple_cdm;
